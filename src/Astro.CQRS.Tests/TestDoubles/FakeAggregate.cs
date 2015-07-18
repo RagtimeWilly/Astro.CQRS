@@ -16,7 +16,7 @@ namespace Astro.CQRS.Tests.TestDoubles
         private FakeAggregate(Guid id)
             : this()
         {
-            this.RaiseEvent(new FakeAggregateCreated(id));
+            RaiseEvent(new FakeAggregateCreated(id));
         }
 
         public string Text { get; private set; }
@@ -28,7 +28,7 @@ namespace Astro.CQRS.Tests.TestDoubles
 
         public void UpdateText(string newText)
         {
-            this.RaiseEvent(new FakeAggregateUpdated(Id, newText));
+            RaiseEvent(new FakeAggregateUpdated(Id, newText));
         }
 
         private void Apply(FakeAggregateCreated evt)

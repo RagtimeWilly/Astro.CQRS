@@ -1,5 +1,5 @@
 ﻿
-namespace Astro.CQRS.Commands
+namespace Astro.CQRS.Messaging
 {
     using System;
     using System.Threading;
@@ -38,7 +38,7 @@ namespace Astro.CQRS.Commands
 
                     var cmd = JsonConvert.DeserializeObject(envelope.Command, cmdType);
 
-                    this._dispatcher.Submit(Convert.ChangeType(cmd, cmdType));
+                    _dispatcher.Submit(Convert.ChangeType(cmd, cmdType));
                 }
                 catch (Exception ex)
                 {
@@ -51,8 +51,8 @@ namespace Astro.CQRS.Commands
 
         public void Stop()
         {
-            this._client.Close();
-            this._stopEvent.Set();
+            _client.Close();
+            _stopEvent.Set();
         }
     }
 }

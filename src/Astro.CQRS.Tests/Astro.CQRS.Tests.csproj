@@ -35,13 +35,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.ServiceBus, Version=2.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.ServiceBus.2.7.5\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.7.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1506.2515\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -56,7 +78,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Messaging\EventTopicTests.cs" />
     <Compile Include="CommandDispatcherTests.cs" />
+    <Compile Include="EventStore\AzureTableStorageEventStoreTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDoubles\Commands\CreateFakeAggregate.cs" />
     <Compile Include="TestDoubles\Commands\UpdateFakeAggregate.cs" />
@@ -67,9 +91,22 @@
     <Compile Include="TestDoubles\InMemoryAggregateRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Astro.CQRS.Messaging\Astro.CQRS.Messaging.csproj">
+      <Project>{96971778-32d2-4ca6-bbd7-64e74aea42b6}</Project>
+      <Name>Astro.CQRS.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Astro.CQRS.EventStore\Astro.CQRS.EventStore.csproj">
+      <Project>{6150033f-0cef-400b-be04-ae4df03211f7}</Project>
+      <Name>Astro.CQRS.EventStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Astro.CQRS.Messaging.EventHub\Astro.CQRS.Messaging.EventHub.csproj">
+      <Project>{d42a0340-84ca-438a-b4ad-531d24565fc5}</Project>
+      <Name>Astro.CQRS.Messaging.EventHub</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Astro.CQRS\Astro.CQRS.csproj">
       <Project>{4f37e3a9-75dd-4e05-b792-01c123cac791}</Project>
       <Name>Astro.CQRS</Name>

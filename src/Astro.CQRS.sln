@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astro.CQRS.Tests", "Astro.CQRS.Tests\Astro.CQRS.Tests.csproj", "{6FAE141B-57DD-4737-9535-F9DC4DBDEE09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astro.CQRS.Events", "Astro.CQRS.Events\Astro.CQRS.Events.csproj", "{D42A0340-84CA-438A-B4AD-531D24565FC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astro.CQRS.Messaging.EventHub", "Astro.CQRS.Messaging.EventHub\Astro.CQRS.Messaging.EventHub.csproj", "{D42A0340-84CA-438A-B4AD-531D24565FC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astro.CQRS", "Astro.CQRS\Astro.CQRS.csproj", "{4F37E3A9-75DD-4E05-B792-01C123CAC791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astro.CQRS.Commands", "Astro.CQRS.Commands\Astro.CQRS.Commands.csproj", "{96971778-32D2-4CA6-BBD7-64E74AEA42B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astro.CQRS.Messaging", "Astro.CQRS.Messaging\Astro.CQRS.Messaging.csproj", "{96971778-32D2-4CA6-BBD7-64E74AEA42B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astro.CQRS.EventStore", "Astro.CQRS.EventStore\Astro.CQRS.EventStore.csproj", "{6150033F-0CEF-400B-BE04-AE4DF03211F7}"
 EndProject

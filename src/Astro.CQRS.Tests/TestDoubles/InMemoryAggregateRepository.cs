@@ -14,15 +14,15 @@ namespace Astro.CQRS.Tests.TestDoubles
         public override IEnumerable<IEvent> Save<TAggregate>(TAggregate aggregate)
         {
             var evtsToSave = aggregate.UncommitedEvents().ToList();
-            var expectedVersion = this.CalculateExpectedVersion(aggregate, evtsToSave);
+            var expectedVersion = CalculateExpectedVersion(aggregate, evtsToSave);
 
             if (expectedVersion < 0)
             {
-                this.eventStore.Add(aggregate.Id, evtsToSave);
+                eventStore.Add(aggregate.Id, evtsToSave);
             }
             else
             {
-                var existingEvents = this.eventStore[aggregate.Id];
+                var existingEvents = eventStore[aggregate.Id];
                 var currentVersion = existingEvents.Count - 1;
 
                 if (currentVersion != expectedVersion)
@@ -38,9 +38,9 @@ namespace Astro.CQRS.Tests.TestDoubles
 
         public override TResult GetById<TResult>(Guid id)
         {
-            if (this.eventStore.ContainsKey(id))
+            if (eventStore.ContainsKey(id))
             {
-                return this.BuildAggregate<TResult>(this.eventStore[id]);
+                return BuildAggregate<TResult>(eventStore[id]);
             }
 
             throw new AggregateNotFoundException(string.Format("Could not found aggregate of type {0} and id {1}", typeof(TResult), id));

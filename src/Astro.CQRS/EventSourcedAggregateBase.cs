@@ -11,7 +11,7 @@ namespace Astro.CQRS
 
         public EventSourcedAggregateBase()
         {
-            this.Version = -1;
+            Version = -1;
         }
 
         public Guid Id { get; protected set; }
@@ -20,35 +20,35 @@ namespace Astro.CQRS
 
         public void RaiseEvent(IEvent evt)
         {
-            this.ApplyEvent(evt);
-            this._uncommitedEvents.Add(evt);
+            ApplyEvent(evt);
+            _uncommitedEvents.Add(evt);
         }
 
         public void ApplyEvent(IEvent evt)
         {
             var eventType = evt.GetType();
 
-            if (this._eventHandlers.ContainsKey(eventType))
+            if (_eventHandlers.ContainsKey(eventType))
             {
-                this._eventHandlers[eventType](evt);
+                _eventHandlers[eventType](evt);
             }
 
-            evt.Version = ++this.Version;
+            evt.Version = ++Version;
         }
 
         public IEnumerable<IEvent> UncommitedEvents()
         {
-            return this._uncommitedEvents;
+            return _uncommitedEvents;
         }
 
         public void ClearUncommitedEvents()
         {
-            this._uncommitedEvents.Clear();
+            _uncommitedEvents.Clear();
         }
 
         protected void RegisterHandler<T>(Action<T> eventHandler) where T : class
         {
-            this._eventHandlers.Add(typeof(T), o => eventHandler(o as T));
+            _eventHandlers.Add(typeof(T), o => eventHandler(o as T));
         }
     }
 }

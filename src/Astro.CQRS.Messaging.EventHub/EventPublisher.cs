@@ -1,5 +1,5 @@
 ﻿
-namespace Astro.CQRS.Events
+namespace Astro.CQRS.Messaging.EventHub
 {
     using System;
     using System.Text;
@@ -37,11 +37,11 @@ namespace Astro.CQRS.Events
 
                 data.Properties.Add("Type", evt.GetType().AssemblyQualifiedName);
                 
-                await this._client.SendAsync(data);
+                await _client.SendAsync(data);
             }
             catch (Exception ex)
             {
-                this._logger.Error("Error while publishing event:{@Event}, ex={ex}", evt, ex.BuildExceptionInfo());
+                _logger.Error("Error while publishing event:{@Event}, ex={ex}", evt, ex.BuildExceptionInfo());
             }
         }
     }

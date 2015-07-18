@@ -1,10 +1,9 @@
 ﻿
-namespace Astro.CQRS.Commands
+namespace Astro.CQRS.Messaging
 {
     using System;
     using System.Threading.Tasks;
     using Astro.CQRS;
-
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
     using Newtonsoft.Json;
@@ -38,11 +37,11 @@ namespace Astro.CQRS.Commands
                 var envelope = new CommandEnvelope(cmdType, cmdJson, this._timeProvider.GetCurrentTime());
                 var json = JsonConvert.SerializeObject(envelope);
 
-                await this._client.SendAsync(new BrokeredMessage(json));
+                await _client.SendAsync(new BrokeredMessage(json));
             }
             catch (Exception ex)
             {
-                this._logger.Error("Error while publishing command:{@Command}, ex={ex}", command, ex.BuildExceptionInfo());
+                _logger.Error("Error while publishing command:{@Command}, ex={ex}", command, ex.BuildExceptionInfo());
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿
-namespace Astro.CQRS.Events
+namespace Astro.CQRS.Messaging.EventHub
 {
     using System;
     using Astro.CQRS;

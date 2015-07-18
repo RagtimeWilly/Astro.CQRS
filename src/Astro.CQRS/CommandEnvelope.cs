@@ -8,9 +8,9 @@ namespace Astro.CQRS
     {
         public CommandEnvelope(string commandType, string commandJson, DateTime createdAt)
         {
-            this.ClrCommandType = commandType;
-            this.Command = commandJson;
-            this.CreatedAtUtc = createdAt;
+            ClrCommandType = commandType;
+            Command = commandJson;
+            CreatedAtUtc = createdAt;
         }
 
         [JsonProperty] 

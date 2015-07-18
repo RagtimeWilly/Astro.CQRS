@@ -7,7 +7,7 @@ namespace Astro.CQRS
     {
         protected VersionedEvent(Guid aggregateId)
         {
-            this.AggregateId = aggregateId;
+            AggregateId = aggregateId;
         }
 
         public Guid AggregateId { get; protected set; }
