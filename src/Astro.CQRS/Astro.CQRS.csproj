@@ -47,7 +47,6 @@
     <Compile Include="EventDispatcher.cs" />
     <Compile Include="EventSourcedAggregateBase.cs" />
     <Compile Include="EventSourcedAggregateRepositoryBase.cs" />
-    <Compile Include="CommandEnvelope.cs" />
     <Compile Include="Interfaces\IEventDispatcher.cs" />
     <Compile Include="Utils\ExceptionEx.cs" />
     <Compile Include="Exceptions\AggregateConflictException.cs" />

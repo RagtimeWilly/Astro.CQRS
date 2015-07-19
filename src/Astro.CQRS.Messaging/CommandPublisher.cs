@@ -8,10 +8,6 @@ namespace Astro.CQRS.Messaging
 
     public class CommandPublisher : QueuePublisher, ICommandPublisher
     {
-        private readonly QueueClient _client;
-        private readonly ITimeProvider _timeProvider;
-        private readonly ILogger _logger;
-
         public CommandPublisher(string connectionString, QueueDescription queueDescription, ILogger logger)
             : base(connectionString, queueDescription, logger)
         {
