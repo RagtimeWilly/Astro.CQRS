@@ -78,6 +78,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Messaging\CommandQueueSubscriberTests.cs" />
+    <Compile Include="Messaging\EventQueueTests.cs" />
     <Compile Include="Messaging\EventTopicTests.cs" />
     <Compile Include="CommandDispatcherTests.cs" />
     <Compile Include="EventStore\AzureTableStorageEventStoreTests.cs" />

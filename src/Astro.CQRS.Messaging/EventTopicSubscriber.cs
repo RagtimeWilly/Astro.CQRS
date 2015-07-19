@@ -7,6 +7,7 @@ namespace Astro.CQRS.Messaging
     using Serilog;
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
+    using System.Threading.Tasks;
 
     public class EventTopicSubscriber : IWorker
     {
@@ -31,27 +32,31 @@ namespace Astro.CQRS.Messaging
             _stopEvent = new ManualResetEvent(false);
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
-            _client.OnMessage((message) =>
-            {
-                try
+            await Task.Run(() => 
+            { 
+                _client.OnMessage((message) =>
                 {
-                    var type = Type.GetType(message.Properties["Type"].ToString());
+                    try
+                    {
+                        var type = Type.GetType(message.Properties["Type"].ToString());
 
-                    var evt = JsonConvert.DeserializeObject(message.GetBody<string>(), type);
+                        var evt = JsonConvert.DeserializeObject(message.GetBody<string>(), type);
 
-                    _eventDispatcher.Process(evt);
-                    message.Complete();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error(ex, "Error while handling event data");
-                    message.Abandon();
-                }
-            }, _options);
+                        _eventDispatcher.Process(evt);
 
-            _stopEvent.WaitOne();
+                        message.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error(ex, "Error while handling event data");
+                        message.Abandon();
+                    }
+                }, _options);
+
+                _stopEvent.WaitOne();
+            });
         }
 
         public void Stop()

@@ -5,16 +5,15 @@ namespace Astro.CQRS.Messaging
     using System.Threading.Tasks;
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
-    using Newtonsoft.Json;
     using Serilog;
 
-    public class EventPublisher : IEventPublisher
+    public class EventTopicPublisher : IEventPublisher
     {
         private readonly TopicClient _client;
         private readonly ITimeProvider _timeProvider;
         private readonly ILogger _logger;
 
-        public EventPublisher(string connectionString, TopicDescription topic, ITimeProvider timeProvider, ILogger logger)
+        public EventTopicPublisher(string connectionString, TopicDescription topic, ITimeProvider timeProvider, ILogger logger)
         {
             var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
@@ -30,11 +29,7 @@ namespace Astro.CQRS.Messaging
         {
             try
             {
-                var message = new BrokeredMessage(JsonConvert.SerializeObject(evt));
-
-                message.Properties["Type"] = evt.GetType().AssemblyQualifiedName;
-
-                await _client.SendAsync(message);
+                await _client.SendAsync(evt.ToBrokeredMessage());
             }
             catch (Exception ex)
             {

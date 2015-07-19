@@ -1,9 +1,11 @@
 ﻿
 namespace Astro.CQRS
 {
+    using System.Threading.Tasks;
+
     public interface IWorker
     {
-        void Start();
+        Task StartAsync();
 
         void Stop();
     }

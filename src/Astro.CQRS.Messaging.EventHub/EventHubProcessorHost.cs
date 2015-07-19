@@ -6,6 +6,7 @@ namespace Astro.CQRS.Messaging.EventHub
     using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
     using Serilog;
+    using System.Threading.Tasks;
 
     public class EventHubProcessorHost : IWorker
     {
@@ -25,26 +26,29 @@ namespace Astro.CQRS.Messaging.EventHub
             _logger = logger;
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
-            var builder = new ServiceBusConnectionStringBuilder(_serviceBusConnectionString)
+            await Task.Run(() =>
             {
-                TransportType = TransportType.Amqp
-            };
+                var builder = new ServiceBusConnectionStringBuilder(_serviceBusConnectionString)
+                {
+                    TransportType = TransportType.Amqp
+                };
 
-            var client = EventHubClient.CreateFromConnectionString(builder.ToString(), _eventHubName);
+                var client = EventHubClient.CreateFromConnectionString(builder.ToString(), _eventHubName);
 
-            try
-            {
-                var eventProcessorHost = new EventProcessorHost("singleworker",
-                  client.Path, client.GetDefaultConsumerGroup().GroupName, builder.ToString(), _storageConnectionString);
+                try
+                {
+                    var eventProcessorHost = new EventProcessorHost("singleworker",
+                      client.Path, client.GetDefaultConsumerGroup().GroupName, builder.ToString(), _storageConnectionString);
 
-                eventProcessorHost.RegisterEventProcessorFactoryAsync(_eventProcessorFactory);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Error while starting event processor, ex={ex}", ex.BuildExceptionInfo());
-            }
+                    eventProcessorHost.RegisterEventProcessorFactoryAsync(_eventProcessorFactory);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Error while starting event processor, ex={ex}", ex.BuildExceptionInfo());
+                }
+            });
         }
 
         public void Stop()

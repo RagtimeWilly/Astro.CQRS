@@ -58,9 +58,14 @@
   <ItemGroup>
     <Compile Include="CommandPublisher.cs" />
     <Compile Include="CommandQueueSubscriber.cs" />
-    <Compile Include="EventPublisher.cs" />
+    <Compile Include="EventQueuePublisher.cs" />
+    <Compile Include="EventTopicPublisher.cs" />
     <Compile Include="EventTopicSubscriber.cs" />
+    <Compile Include="ObjectEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueuePublisher.cs" />
+    <Compile Include="EventQueueSubscriber.cs" />
+    <Compile Include="QueueSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Astro.CQRS\Astro.CQRS.csproj">

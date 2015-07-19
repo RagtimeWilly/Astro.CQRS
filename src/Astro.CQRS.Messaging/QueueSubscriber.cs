@@ -3,28 +3,28 @@ namespace Astro.CQRS.Messaging
 {
     using System;
     using System.Threading;
-    using Astro.CQRS;
-    using Microsoft.ServiceBus.Messaging;
-    using Newtonsoft.Json;
-    using Serilog;
     using System.Threading.Tasks;
+    using Newtonsoft.Json;
+    using Microsoft.ServiceBus.Messaging;
+    using Serilog;
 
-    public class CommandQueueSubscriber : IWorker
+    public abstract class QueueSubscriber
     {
         private readonly QueueClient _client;
         private readonly ICommandDispatcher _dispatcher;
         private readonly ILogger _logger;
+        private readonly string _queueName;
         private readonly ManualResetEvent _stopEvent;
 
-        public CommandQueueSubscriber(string connectionString, string queueName, ICommandDispatcher dispatcher, ILogger logger)
+        public QueueSubscriber(string connectionString, string queueName, ILogger logger)
         {
-            _dispatcher = dispatcher;
             _logger = logger;
             _client = QueueClient.CreateFromConnectionString(connectionString, queueName);
+            _queueName = queueName;
             _stopEvent = new ManualResetEvent(false);
         }
 
-        public async Task StartAsync()
+        protected virtual async Task StartAsync(Action<object> processMessage)
         {
             await Task.Run(() =>
             {
@@ -36,11 +36,11 @@ namespace Astro.CQRS.Messaging
 
                         var cmd = JsonConvert.DeserializeObject(receivedMessage.GetBody<string>(), type);
 
-                        _dispatcher.Submit(Convert.ChangeType(cmd, type));
+                        processMessage(Convert.ChangeType(cmd, type));
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error("Error while handling command, ex={ex}", ex.BuildExceptionInfo());
+                        _logger.Error(ex, "Error while handling process message from {queue}, ex={ex}", _queueName);
                     }
                 });
 

@@ -1,5 +1,5 @@
 ﻿
-namespace Astro.CQRS.Tests.Azure
+namespace Astro.CQRS.Tests.Messaging
 {
     using System;
     using System.Configuration;
@@ -7,7 +7,6 @@ namespace Astro.CQRS.Tests.Azure
     using System.Threading.Tasks;
     using Astro.CQRS.Messaging;
     using Astro.CQRS.Tests.TestDoubles.Events;
-    using Microsoft.ServiceBus;
     using Microsoft.ServiceBus.Messaging;
     using Moq;
     using Newtonsoft.Json;
@@ -15,19 +14,18 @@ namespace Astro.CQRS.Tests.Azure
     using Serilog;
 
     [TestFixture]
-    public class EventTopicTests
+    public class EventQueueTests
     {
-        EventTopicPublisher _evtPublisher;
-        SubscriptionClient _client;
+        EventQueuePublisher _evtPublisher;
+        QueueClient _client;
 
         [TestFixtureSetUp]
         public void Init()
         {
             var connectionString = ConfigurationManager.AppSettings["ServiceBus.ConnectionString"];
-            var topicPath = ConfigurationManager.AppSettings["TopicName"];
-            var subscriptionName = "UnitTest";
+            var queueName = ConfigurationManager.AppSettings["EventsQueueName"];
 
-            var topicDescription = new TopicDescription(topicPath)
+            var queueDescription = new QueueDescription(queueName)
             {
                 MaxSizeInMegabytes = 1024,
                 DefaultMessageTimeToLive = new TimeSpan(0, 1, 0)
@@ -36,18 +34,13 @@ namespace Astro.CQRS.Tests.Azure
             var timeProvider = new UtcTimeProvider();
             var logger = new Mock<ILogger>();
 
-            _evtPublisher = new EventTopicPublisher(connectionString, topicDescription, timeProvider, logger.Object);
+            _evtPublisher = new EventQueuePublisher(connectionString, queueDescription, logger.Object);
 
-            var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
-
-            if (!namespaceManager.SubscriptionExists(topicPath, subscriptionName))
-                namespaceManager.CreateSubscription(topicPath, subscriptionName);
-
-            _client = SubscriptionClient.CreateFromConnectionString(connectionString, topicPath, subscriptionName);
+            _client = QueueClient.CreateFromConnectionString(connectionString, queueName);
         }
 
         [Test]
-        public async void PublishEventToTopicTest()
+        public async void PublishEventToQueueTest()
         {
             var resetEvent = new ManualResetEvent(false);
             var msgReceived = false;

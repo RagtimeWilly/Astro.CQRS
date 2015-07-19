@@ -6,8 +6,7 @@ namespace Astro.CQRS
 
     public class EventDispatcher : BaseDispatcher<IEventHandler>, IEventDispatcher
     {
-        public EventDispatcher(
-            IEnumerable<IEventHandler> eventHandlers)
+        public EventDispatcher(IEnumerable<IEventHandler> eventHandlers)
             : base(typeof(IEventHandler<>), eventHandlers)
         {
         }
@@ -18,7 +17,7 @@ namespace Astro.CQRS
             {
                 dynamic handler = _handlers[evt.GetType()];
 
-                handler.Execute((dynamic)evt);
+                handler.HandleEvent((dynamic)evt);
             }
             else
             {
