@@ -16,7 +16,7 @@ namespace Astro.CQRS.Tests
         public void Start_SubscribesAndReceivesMessages()
         {
             var connectionString = ConfigurationManager.AppSettings["ServiceBus.ConnectionString"];
-            var queueName = ConfigurationManager.AppSettings["QueueName"];
+            var queueName = ConfigurationManager.AppSettings["CommandsQueueName"];
 
             var handlers = new List<ICommandHandler>();
             var repo = new Mock<IEventSourcedAggregateRepository>();
@@ -29,7 +29,9 @@ namespace Astro.CQRS.Tests
 
             subscriber.StartAsync();
 
-            Thread.Sleep(60 * 60 * 1000);
+            Thread.Sleep(60 * 1000);
+
+            subscriber.Stop();
         }
     }
 }
