@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Astro.CQRS</id>
+        <version>$version$</version>
+        <title>Astro.CQRS</title>
+        <authors>Sean Comiskey</authors>
+        <owners>Sean Comiskey</owners>
+		<licenseUrl>https://github.com/RagtimeWilly/Astro.CQRS/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/RagtimeWilly/Astro.CQRS/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Collection of libraries for implementing the CQRS pattern on the Azure platform</description>
+        <copyright>Copyright © Sean Comiskey 2016</copyright>
+		<tags>astro cqrs azure</tags>
+        <dependencies>
+			<dependency id="Newtonsoft.Json" version="9.0.1" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\Astro.CQRS.dll" target="lib\net452\Astro.CQRS.dll" />
+    </files>
+</package>

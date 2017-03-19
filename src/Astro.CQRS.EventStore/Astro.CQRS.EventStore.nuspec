@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Astro.CQRS.EventStore</id>
+        <version>$version$</version>
+        <title>Astro.CQRS.EventStore</title>
+        <authors>Sean Comiskey</authors>
+        <owners>Sean Comiskey</owners>
+		<licenseUrl>https://github.com/RagtimeWilly/Astro.CQRS/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/RagtimeWilly/Astro.CQRS/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Event store implementation for use with Astro.CQRS</description>
+        <copyright>Copyright © Sean Comiskey 2016</copyright>
+		<tags>astro cqrs azure table storage</tags>
+        <dependencies>
+			<dependency id="Astro.CQRS" version="$version$" />
+			<dependency id="Newtonsoft.Json" version="9.0.1" />
+			<dependency id="Microsoft.Data.Edm" version="5.6.4" />
+			<dependency id="Microsoft.Data.OData" version="5.6.4" />
+			<dependency id="Microsoft.Data.Services.Client" version="5.6.4" />
+			<dependency id="Microsoft.WindowsAzure.ConfigurationManager" version="3.1.0" />
+			<dependency id="Newtonsoft.Json" version="9.0.1" />
+			<dependency id="System.Spatial" version="5.6.4" />
+			<dependency id="WindowsAzure.Storage" version="4.3.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\Astro.CQRS.EventStore.dll" target="lib\net452\Astro.CQRS.EventStore.dll" />
+    </files>
+</package>
