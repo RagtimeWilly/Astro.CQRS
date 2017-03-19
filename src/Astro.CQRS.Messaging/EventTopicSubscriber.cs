@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using Newtonsoft.Json;
-using Serilog;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using System.Threading.Tasks;
@@ -13,11 +12,11 @@ namespace Astro.CQRS.Messaging
         private readonly SubscriptionClient _client;
         private readonly OnMessageOptions _options;
         private readonly IEventDispatcher _eventDispatcher;
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
         private readonly ManualResetEvent _stopEvent;
 
         public EventTopicSubscriber(string connectionString, string topicName, string subscriptionName, 
-            OnMessageOptions options, IEventDispatcher eventDispatcher, ILogger logger)
+            OnMessageOptions options, IEventDispatcher eventDispatcher, Action<Exception, string> onError)
         {
             var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
@@ -27,7 +26,7 @@ namespace Astro.CQRS.Messaging
             _client = SubscriptionClient.CreateFromConnectionString(connectionString, topicName, subscriptionName);
             _options = options;
             _eventDispatcher = eventDispatcher;
-            _logger = logger;
+            _onError = onError;
             _stopEvent = new ManualResetEvent(false);
         }
 
@@ -49,7 +48,7 @@ namespace Astro.CQRS.Messaging
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error(ex, "Error while handling event data");
+                        _onError(ex, "Error while handling event data");
                         message.Abandon();
                     }
                 }, _options);

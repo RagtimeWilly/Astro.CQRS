@@ -4,23 +4,22 @@ using System.Threading.Tasks;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
-using Serilog;
 
 namespace Astro.CQRS.Messaging.EventHub
 {
     public class EventPublisher : IEventPublisher
     {
         private readonly string _partitionKey;
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
         private readonly EventHubClient _client;
 
-        public EventPublisher(string connectionString, string eventHubName, string partitionKey, ILogger logger)
+        public EventPublisher(string connectionString, string eventHubName, string partitionKey, Action<Exception, string> onError)
         {
             var builder = new ServiceBusConnectionStringBuilder(connectionString) { TransportType = TransportType.Amqp };
 
             _partitionKey = partitionKey;
             _client = EventHubClient.CreateFromConnectionString(builder.ToString(), eventHubName);
-            _logger = logger;
+            _onError = onError;
         }
 
         public async Task PublishEvent(IEvent evt)
@@ -39,7 +38,7 @@ namespace Astro.CQRS.Messaging.EventHub
             }
             catch (Exception ex)
             {
-                _logger.Error("Error while publishing event:{@Event}, ex={ex}", evt, ex.BuildExceptionInfo());
+                _onError(ex, "Error while publishing event");
             }
         }
     }

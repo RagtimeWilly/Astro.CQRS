@@ -4,7 +4,6 @@ using System.Threading;
 using Astro.CQRS.Messaging;
 using Moq;
 using NUnit.Framework;
-using Serilog;
 
 namespace Astro.CQRS.Tests.Messaging
 {
@@ -20,11 +19,10 @@ namespace Astro.CQRS.Tests.Messaging
             var handlers = new List<ICommandHandler>();
             var repo = new Mock<IEventSourcedAggregateRepository>();
             var publisher = new Mock<IEventPublisher>();
-            var logger = new Mock<ILogger>();
 
             var dispatcher = new CommandDispatcher(handlers, repo.Object, publisher.Object);
 
-            var subscriber = new CommandQueueSubscriber(connectionString, queueName, dispatcher, logger.Object);
+            var subscriber = new CommandQueueSubscriber(connectionString, queueName, dispatcher, (ex, s) => { });
 
             subscriber.StartAsync();
 

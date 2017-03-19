@@ -1,23 +1,20 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
+
 namespace Astro.CQRS.Messaging.EventHub
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Astro.CQRS;
-    using Microsoft.ServiceBus.Messaging;
-    using Newtonsoft.Json;
-    using Serilog;
-
     public class EventProcessor : BaseDispatcher<IEventHandler>, IEventProcessor
     {
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
 
-        public EventProcessor(IEnumerable<IEventHandler> handlers, ILogger logger)
+        public EventProcessor(IEnumerable<IEventHandler> handlers, Action<Exception, string> onError)
             : base(typeof(IEventHandler<>), handlers)
         {
-            _logger = logger;
+            _onError = onError;
         }
 
         public Task OpenAsync(PartitionContext context)
@@ -62,12 +59,12 @@ namespace Astro.CQRS.Messaging.EventHub
                         }
                         else
                         {
-                            _logger.Warning("No handler found for event: {event}", evt);
+                            _onError(new Exception(), $"No handler found for event: {type}");
                         }
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error("Error while handling event data, ex={ex}", ex.BuildExceptionInfo());
+                        _onError(ex, "Error while handling event data");
                     }
                 });
         }

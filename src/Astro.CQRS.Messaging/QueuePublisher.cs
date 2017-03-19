@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.ServiceBus.Messaging;
-using Serilog;
 using Microsoft.ServiceBus;
 
 namespace Astro.CQRS.Messaging
@@ -10,9 +9,9 @@ namespace Astro.CQRS.Messaging
     {
         private readonly QueueClient _client;
         private readonly string _queueName;
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
 
-        protected QueuePublisher(string connectionString, QueueDescription queueDescription, ILogger logger)
+        protected QueuePublisher(string connectionString, QueueDescription queueDescription, Action<Exception, string> onError)
         {
             var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
@@ -21,7 +20,7 @@ namespace Astro.CQRS.Messaging
 
             _client = QueueClient.CreateFromConnectionString(connectionString, queueDescription.Path);
             _queueName = queueDescription.Path;
-            _logger = logger;
+            _onError = onError;
         }
 
         protected async Task Publish<T>(T msg)
@@ -32,7 +31,7 @@ namespace Astro.CQRS.Messaging
             }
             catch (Exception ex)
             {
-                _logger.Error("Error while publishing to {queue}:{@Command}, ex={ex}", _queueName, msg, ex.BuildExceptionInfo());
+                _onError(ex, $"Error while publishing to {_queueName}");
             }
         }
     }

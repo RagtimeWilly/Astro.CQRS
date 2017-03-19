@@ -3,20 +3,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.ServiceBus.Messaging;
-using Serilog;
 
 namespace Astro.CQRS.Messaging
 {
     public abstract class QueueSubscriber
     {
         private readonly QueueClient _client;
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
         private readonly string _queueName;
         private readonly ManualResetEvent _stopEvent;
 
-        protected QueueSubscriber(string connectionString, string queueName, ILogger logger)
+        protected QueueSubscriber(string connectionString, string queueName, Action<Exception, string> onError)
         {
-            _logger = logger;
+            _onError = onError;
             _client = QueueClient.CreateFromConnectionString(connectionString, queueName);
             _queueName = queueName;
             _stopEvent = new ManualResetEvent(false);
@@ -38,7 +37,7 @@ namespace Astro.CQRS.Messaging
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error(ex, "Error while handling process message from {queue}, ex={ex}", _queueName);
+                        _onError(ex, $"Error while handling process message from {_queueName}");
                     }
                 });
 

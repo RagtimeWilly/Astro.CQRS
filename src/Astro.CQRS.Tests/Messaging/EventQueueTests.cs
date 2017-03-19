@@ -8,7 +8,6 @@ using Microsoft.ServiceBus.Messaging;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using Serilog;
 
 namespace Astro.CQRS.Tests.Messaging
 {
@@ -30,9 +29,7 @@ namespace Astro.CQRS.Tests.Messaging
                 DefaultMessageTimeToLive = new TimeSpan(0, 1, 0)
             };
 
-            var logger = new Mock<ILogger>();
-
-            _evtPublisher = new EventQueuePublisher(connectionString, queueDescription, logger.Object);
+            _evtPublisher = new EventQueuePublisher(connectionString, queueDescription, (ex, s) => { });
 
             _client = QueueClient.CreateFromConnectionString(connectionString, queueName);
         }

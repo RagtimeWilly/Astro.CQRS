@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Serilog;
 using System.Threading.Tasks;
 
 namespace Astro.CQRS.Messaging.EventHub
@@ -12,16 +11,16 @@ namespace Astro.CQRS.Messaging.EventHub
         private readonly string _serviceBusConnectionString;
         private readonly string _storageConnectionString;
         private readonly string _eventHubName;
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
 
         public EventHubProcessorHost(IEventProcessorFactory eventProcessorFactory, string serviceBusConnectionString, 
-            string storageConnectionString, string eventHubName, ILogger logger)
+            string storageConnectionString, string eventHubName, Action<Exception, string> onError)
         {
             _eventProcessorFactory = eventProcessorFactory;
             _serviceBusConnectionString = serviceBusConnectionString;
             _storageConnectionString = storageConnectionString;
             _eventHubName = eventHubName;
-            _logger = logger;
+            _onError = onError;
         }
 
         public async Task StartAsync()
@@ -44,7 +43,7 @@ namespace Astro.CQRS.Messaging.EventHub
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Error while starting event processor, ex={ex}", ex.BuildExceptionInfo());
+                    _onError(ex, "Error while starting event processor");
                 }
             });
         }

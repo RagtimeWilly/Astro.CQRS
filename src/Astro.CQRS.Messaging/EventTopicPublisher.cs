@@ -2,16 +2,15 @@
 using System.Threading.Tasks;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Serilog;
 
 namespace Astro.CQRS.Messaging
 {
     public class EventTopicPublisher : IEventPublisher
     {
         private readonly TopicClient _client;
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
 
-        public EventTopicPublisher(string connectionString, TopicDescription topic, ILogger logger)
+        public EventTopicPublisher(string connectionString, TopicDescription topic, Action<Exception, string> onError)
         {
             var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
@@ -19,7 +18,7 @@ namespace Astro.CQRS.Messaging
                 namespaceManager.CreateTopic(topic);
 
             _client = TopicClient.CreateFromConnectionString(connectionString, topic.Path);
-            _logger = logger;
+            _onError = onError;
         }
 
         public async Task PublishEvent(IEvent evt)
@@ -30,7 +29,7 @@ namespace Astro.CQRS.Messaging
             }
             catch (Exception ex)
             {
-                _logger.Error("Error while publishing event:{@evt}, ex={ex}", evt, ex.BuildExceptionInfo());
+                _onError(ex, "Error while publishing event");
             }
         }
     }

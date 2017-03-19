@@ -2,7 +2,6 @@
 using System.Threading;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
-using Serilog;
 using System.Threading.Tasks;
 
 namespace Astro.CQRS.Messaging
@@ -11,13 +10,13 @@ namespace Astro.CQRS.Messaging
     {
         private readonly QueueClient _client;
         private readonly ICommandDispatcher _dispatcher;
-        private readonly ILogger _logger;
+        private readonly Action<Exception, string> _onError;
         private readonly ManualResetEvent _stopEvent;
 
-        public CommandQueueSubscriber(string connectionString, string queueName, ICommandDispatcher dispatcher, ILogger logger)
+        public CommandQueueSubscriber(string connectionString, string queueName, ICommandDispatcher dispatcher, Action<Exception, string> onError)
         {
             _dispatcher = dispatcher;
-            _logger = logger;
+            _onError = onError;
             _client = QueueClient.CreateFromConnectionString(connectionString, queueName);
             _stopEvent = new ManualResetEvent(false);
         }
@@ -38,7 +37,7 @@ namespace Astro.CQRS.Messaging
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error("Error while handling command, ex={ex}", ex.BuildExceptionInfo());
+                        _onError(ex, "Error while handling command");
                     }
                 });
 

@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Serilog;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Astro.CQRS.Messaging
 {
@@ -7,8 +7,8 @@ namespace Astro.CQRS.Messaging
     {
         private readonly IEventDispatcher _eventDispatcher;
 
-        public EventQueueSubscriber(string connectionString, string queueName, IEventDispatcher eventDispatcher, ILogger logger)
-            : base(connectionString, queueName, logger)
+        public EventQueueSubscriber(string connectionString, string queueName, IEventDispatcher eventDispatcher, Action<Exception, string> onError)
+            : base(connectionString, queueName, onError)
         {
             _eventDispatcher = eventDispatcher;
         }
