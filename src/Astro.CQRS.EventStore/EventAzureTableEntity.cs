@@ -1,8 +1,7 @@
-﻿
+﻿using Microsoft.WindowsAzure.Storage.Table;
+
 namespace Astro.CQRS.EventStore
 {
-    using Microsoft.WindowsAzure.Storage.Table;
-
     public sealed class EventAzureTableEntity : TableEntity
     {
         public string AggregateId { get; set; }

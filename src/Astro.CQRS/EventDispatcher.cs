@@ -13,9 +13,9 @@ namespace Astro.CQRS
 
         public void Process<TEvent>(TEvent evt)
         {
-            if (_handlers.ContainsKey(evt.GetType()))
+            if (Handlers.ContainsKey(evt.GetType()))
             {
-                dynamic handler = _handlers[evt.GetType()];
+                dynamic handler = Handlers[evt.GetType()];
 
                 handler.HandleEvent((dynamic)evt);
             }

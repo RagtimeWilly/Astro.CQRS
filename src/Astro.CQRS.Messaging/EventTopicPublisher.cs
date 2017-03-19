@@ -1,19 +1,17 @@
-﻿
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using Serilog;
+
 namespace Astro.CQRS.Messaging
 {
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.ServiceBus;
-    using Microsoft.ServiceBus.Messaging;
-    using Serilog;
-
     public class EventTopicPublisher : IEventPublisher
     {
         private readonly TopicClient _client;
-        private readonly ITimeProvider _timeProvider;
         private readonly ILogger _logger;
 
-        public EventTopicPublisher(string connectionString, TopicDescription topic, ITimeProvider timeProvider, ILogger logger)
+        public EventTopicPublisher(string connectionString, TopicDescription topic, ILogger logger)
         {
             var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
@@ -21,7 +19,6 @@ namespace Astro.CQRS.Messaging
                 namespaceManager.CreateTopic(topic);
 
             _client = TopicClient.CreateFromConnectionString(connectionString, topic.Path);
-            _timeProvider = timeProvider;
             _logger = logger;
         }
 

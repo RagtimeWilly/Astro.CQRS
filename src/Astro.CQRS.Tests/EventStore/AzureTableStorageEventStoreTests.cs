@@ -1,13 +1,12 @@
-﻿
+﻿using System;
+using System.Linq;
+using Astro.CQRS.EventStore;
+using Astro.CQRS.Tests.TestDoubles;
+using NUnit.Framework;
+
 namespace Astro.CQRS.Tests.EventStore
 {
-    using System;
-    using System.Linq;
-    using Astro.CQRS.EventStore;
-    using Astro.CQRS.Tests.TestDoubles;
-    using NUnit.Framework;
-
-    [TestFixture]
+    [TestFixture, Explicit]
     public class AzureTableStorageEventStoreTests
     {
         [Test]

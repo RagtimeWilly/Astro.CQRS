@@ -1,15 +1,13 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Astro.CQRS.Exceptions;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
+
 namespace Astro.CQRS.EventStore
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Astro.CQRS;
-    using Astro.CQRS.Exceptions;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using Newtonsoft.Json;
-
     public class AzureTableStorageEventStore : EventSourcedAggregateRepositoryBase
     {
         private readonly CloudTableClient _tableClient;
@@ -19,7 +17,6 @@ namespace Astro.CQRS.EventStore
         {
             var storageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
-            // Create the table client.
             _tableClient = storageAccount.CreateCloudTableClient();
             _timeProvider = timeProvider;
         }
@@ -52,7 +49,6 @@ namespace Astro.CQRS.EventStore
 
                 try
                 {
-                    // Execute the insert operation.
                     table.Execute(insertOperation);
                 }
                 catch (Exception ex)

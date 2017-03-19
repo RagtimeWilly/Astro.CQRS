@@ -1,9 +1,7 @@
-﻿
+﻿using System;
+
 namespace Astro.CQRS.Tests.TestDoubles.Events
 {
-    using System;
-    using Astro.CQRS;
-
     public class FakeAggregateUpdated : VersionedEvent
     {
         public FakeAggregateUpdated(Guid aggregateId, string text)

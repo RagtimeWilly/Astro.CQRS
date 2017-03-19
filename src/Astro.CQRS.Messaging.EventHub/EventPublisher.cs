@@ -1,15 +1,13 @@
-﻿
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
+using Serilog;
+
 namespace Astro.CQRS.Messaging.EventHub
 {
-    using System;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Astro.CQRS;
-    using Microsoft.ServiceBus;
-    using Microsoft.ServiceBus.Messaging;
-    using Newtonsoft.Json;
-    using Serilog;
-
     public class EventPublisher : IEventPublisher
     {
         private readonly string _partitionKey;

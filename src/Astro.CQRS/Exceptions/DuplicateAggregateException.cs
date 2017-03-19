@@ -1,8 +1,7 @@
-﻿
+﻿using System;
+
 namespace Astro.CQRS.Exceptions
 {
-    using System;
-
     public abstract class DuplicateAggregateException : Exception
     {
         protected DuplicateAggregateException(Guid id)
@@ -12,7 +11,7 @@ namespace Astro.CQRS.Exceptions
 
         private static string CreateMessage(Guid id)
         {
-            return string.Format("Aggregate already exists with id {0}", id);
+            return $"Aggregate already exists with id {id}";
         }
     }
 }

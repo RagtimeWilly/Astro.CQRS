@@ -1,20 +1,19 @@
-﻿
+﻿using System;
+using System.Threading;
+using Newtonsoft.Json;
+using Serilog;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using System.Threading.Tasks;
+
 namespace Astro.CQRS.Messaging
 {
-    using System;
-    using System.Threading;
-    using Newtonsoft.Json;
-    using Serilog;
-    using Microsoft.ServiceBus;
-    using Microsoft.ServiceBus.Messaging;
-    using System.Threading.Tasks;
-
     public class EventTopicSubscriber : IWorker
     {
-        SubscriptionClient _client;
-        OnMessageOptions _options;
-        IEventDispatcher _eventDispatcher;
-        ILogger _logger;
+        private readonly SubscriptionClient _client;
+        private readonly OnMessageOptions _options;
+        private readonly IEventDispatcher _eventDispatcher;
+        private readonly ILogger _logger;
         private readonly ManualResetEvent _stopEvent;
 
         public EventTopicSubscriber(string connectionString, string topicName, string subscriptionName, 

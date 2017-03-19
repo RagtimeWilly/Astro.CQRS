@@ -1,14 +1,13 @@
-﻿
-namespace Astro.CQRS.Tests
-{
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.Threading;
-    using Astro.CQRS.Messaging;
-    using Moq;
-    using NUnit.Framework;
-    using Serilog;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Threading;
+using Astro.CQRS.Messaging;
+using Moq;
+using NUnit.Framework;
+using Serilog;
 
+namespace Astro.CQRS.Tests.Messaging
+{
     [TestFixture]
     public class CommandQueueSubscriberTests
     {

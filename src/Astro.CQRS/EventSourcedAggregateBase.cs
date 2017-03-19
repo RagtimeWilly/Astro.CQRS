@@ -1,9 +1,8 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Astro.CQRS
 {
-    using System;
-    using System.Collections.Generic;
-
     public class EventSourcedAggregateBase : IEventSourcedAggregate
     {
         private readonly List<IEvent> _uncommitedEvents = new List<IEvent>();

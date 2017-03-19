@@ -1,9 +1,8 @@
-﻿
+﻿using System.Threading.Tasks;
+using Serilog;
+
 namespace Astro.CQRS.Messaging
 {
-    using System.Threading.Tasks;
-    using Serilog;
-
     public class EventQueueSubscriber : QueueSubscriber, IWorker
     {
         private readonly IEventDispatcher _eventDispatcher;

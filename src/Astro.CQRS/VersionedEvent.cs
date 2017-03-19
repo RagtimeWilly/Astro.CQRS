@@ -1,8 +1,7 @@
-﻿
+﻿using System;
+
 namespace Astro.CQRS
 {
-    using System;
-
     public abstract class VersionedEvent : IEvent
     {
         protected VersionedEvent(Guid aggregateId)

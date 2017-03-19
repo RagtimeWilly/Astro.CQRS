@@ -1,14 +1,12 @@
-﻿
+﻿using System;
+using System.Threading;
+using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
+using Serilog;
+using System.Threading.Tasks;
+
 namespace Astro.CQRS.Messaging
 {
-    using System;
-    using System.Threading;
-    using Astro.CQRS;
-    using Microsoft.ServiceBus.Messaging;
-    using Newtonsoft.Json;
-    using Serilog;
-    using System.Threading.Tasks;
-
     public class CommandQueueSubscriber : IWorker
     {
         private readonly QueueClient _client;

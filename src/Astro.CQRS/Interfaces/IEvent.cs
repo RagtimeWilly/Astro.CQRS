@@ -1,8 +1,7 @@
-﻿
+﻿using System;
+
 namespace Astro.CQRS
 {
-    using System;
-
     public interface IEvent
     {
         Guid AggregateId { get; }

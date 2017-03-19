@@ -1,14 +1,12 @@
-﻿
+﻿using System;
+using Astro.CQRS.Tests.TestDoubles;
+using Astro.CQRS.Tests.TestDoubles.Commands;
+using Astro.CQRS.Tests.TestDoubles.Events;
+using Moq;
+using NUnit.Framework;
+
 namespace Astro.CQRS.Tests
 {
-    using System;
-    using Astro.CQRS;
-    using Astro.CQRS.Tests.TestDoubles;
-    using Astro.CQRS.Tests.TestDoubles.Commands;
-    using Astro.CQRS.Tests.TestDoubles.Events;
-    using Moq;
-    using NUnit.Framework;
-
     [TestFixture]
     public class CommandDispatcherTests
     {

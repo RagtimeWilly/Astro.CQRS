@@ -1,9 +1,8 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Astro.CQRS
 {
-    using System;
-    using System.Collections.Generic;
-
     public class CommandDispatcher : BaseDispatcher<ICommandHandler>, ICommandDispatcher
     {
         private readonly IEventSourcedAggregateRepository _aggregateRepository;
@@ -21,9 +20,9 @@ namespace Astro.CQRS
 
         public void Submit<TCommand>(TCommand command)
         {
-            if (_handlers.ContainsKey(command.GetType()))
+            if (Handlers.ContainsKey(command.GetType()))
             {
-                dynamic handler = _handlers[command.GetType()];
+                dynamic handler = Handlers[command.GetType()];
 
                 var aggregate = handler.Execute((dynamic)command);
                

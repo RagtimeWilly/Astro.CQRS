@@ -1,10 +1,8 @@
-﻿
+﻿using System;
+using Astro.CQRS.Tests.TestDoubles.Events;
+
 namespace Astro.CQRS.Tests.TestDoubles
 {
-    using System;
-    using Astro.CQRS;
-    using Astro.CQRS.Tests.TestDoubles.Events;
-
     public class FakeAggregate : EventSourcedAggregateBase
     {
         public FakeAggregate()

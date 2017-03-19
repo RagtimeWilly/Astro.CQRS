@@ -1,20 +1,19 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Astro.CQRS
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public abstract class BaseDispatcher<T>
     {
-        protected readonly Type _genericHandler;
-        protected readonly Dictionary<Type, T> _handlers;
+        protected readonly Type GenericHandler;
+        protected readonly Dictionary<Type, T> Handlers;
 
         protected BaseDispatcher(Type genericHandler, IEnumerable<T> handlers)
         {
-            _genericHandler = genericHandler;
+            GenericHandler = genericHandler;
 
-            _handlers = new Dictionary<Type, T>();
+            Handlers = new Dictionary<Type, T>();
 
             foreach (var handler in handlers)
                 Register(handler);
@@ -24,15 +23,15 @@ namespace Astro.CQRS
         {
             var cmdTypes = handler.GetType()
                                   .GetInterfaces()
-                                  .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == _genericHandler)
+                                  .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == GenericHandler)
                                   .Select(i => i.GetGenericArguments()[0])
                                   .ToList();
 
-            if (_handlers.Keys.Any(cmdTypes.Contains))
+            if (Handlers.Keys.Any(cmdTypes.Contains))
                 throw new ArgumentException("Only one handler per type is allowed");
 
             foreach (var cmdType in cmdTypes)
-                _handlers.Add(cmdType, handler);
+                Handlers.Add(cmdType, handler);
         }
     }
 }

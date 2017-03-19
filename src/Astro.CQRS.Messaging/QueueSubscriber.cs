@@ -1,22 +1,20 @@
-﻿
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Microsoft.ServiceBus.Messaging;
+using Serilog;
+
 namespace Astro.CQRS.Messaging
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Newtonsoft.Json;
-    using Microsoft.ServiceBus.Messaging;
-    using Serilog;
-
     public abstract class QueueSubscriber
     {
         private readonly QueueClient _client;
-        private readonly ICommandDispatcher _dispatcher;
         private readonly ILogger _logger;
         private readonly string _queueName;
         private readonly ManualResetEvent _stopEvent;
 
-        public QueueSubscriber(string connectionString, string queueName, ILogger logger)
+        protected QueueSubscriber(string connectionString, string queueName, ILogger logger)
         {
             _logger = logger;
             _client = QueueClient.CreateFromConnectionString(connectionString, queueName);

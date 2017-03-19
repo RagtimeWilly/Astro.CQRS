@@ -1,17 +1,15 @@
-﻿
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.ServiceBus.Messaging;
+using Serilog;
+using Microsoft.ServiceBus;
+
 namespace Astro.CQRS.Messaging
 {
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.ServiceBus.Messaging;
-    using Serilog;
-    using Microsoft.ServiceBus;
-
     public abstract class QueuePublisher
     {
         private readonly QueueClient _client;
         private readonly string _queueName;
-        private readonly ITimeProvider _timeProvider;
         private readonly ILogger _logger;
 
         protected QueuePublisher(string connectionString, QueueDescription queueDescription, ILogger logger)

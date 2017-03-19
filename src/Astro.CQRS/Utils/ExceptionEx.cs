@@ -1,8 +1,7 @@
-﻿
+﻿using System;
+
 namespace Astro.CQRS
 {
-    using System;
-
     public static class ExceptionEx
     {
         /// <summary>
@@ -10,10 +9,7 @@ namespace Astro.CQRS
         /// </summary>
         public static string BuildExceptionInfo(this Exception ex)
         {
-            return string.Format(
-                "{0}\r\nStack Trace:\r\n{1}",
-                ex.GetTypeAndMessage().AppendInnerExceptionMessage(ex),
-                ex.StackTrace);
+            return $"{ex.GetTypeAndMessage().AppendInnerExceptionMessage(ex)}\r\nStack Trace:\r\n{ex.StackTrace}";
         }
 
         private static string AppendInnerExceptionMessage(this string s, Exception ex)
@@ -21,13 +17,13 @@ namespace Astro.CQRS
             if (ex.InnerException == null)
                 return s;
 
-            return string.Format("{0}\r\n-{1}", s, ex.InnerException.GetTypeAndMessage())
-                         .AppendInnerExceptionMessage(ex.InnerException);
+            return $"{s}\r\n-{ex.InnerException.GetTypeAndMessage()}"
+                .AppendInnerExceptionMessage(ex.InnerException);
         }
 
         private static string GetTypeAndMessage(this Exception ex)
         {
-            return string.Format("{0}: {1}", ex.GetType().Name, ex.Message);
+            return $"{ex.GetType().Name}: {ex.Message}";
         }
     }
 }

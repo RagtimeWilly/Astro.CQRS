@@ -1,24 +1,23 @@
-﻿
-namespace Astro.CQRS.Tests.Azure
-{
-    using System;
-    using System.Configuration;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Astro.CQRS.Messaging;
-    using Astro.CQRS.Tests.TestDoubles.Events;
-    using Microsoft.ServiceBus;
-    using Microsoft.ServiceBus.Messaging;
-    using Moq;
-    using Newtonsoft.Json;
-    using NUnit.Framework;
-    using Serilog;
+﻿using System;
+using System.Configuration;
+using System.Threading;
+using System.Threading.Tasks;
+using Astro.CQRS.Messaging;
+using Astro.CQRS.Tests.TestDoubles.Events;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using Moq;
+using Newtonsoft.Json;
+using NUnit.Framework;
+using Serilog;
 
-    [TestFixture]
+namespace Astro.CQRS.Tests.Messaging
+{
+    [TestFixture, Explicit]
     public class EventTopicTests
     {
-        EventTopicPublisher _evtPublisher;
-        SubscriptionClient _client;
+        private EventTopicPublisher _evtPublisher;
+        private SubscriptionClient _client;
 
         [TestFixtureSetUp]
         public void Init()
@@ -33,10 +32,9 @@ namespace Astro.CQRS.Tests.Azure
                 DefaultMessageTimeToLive = new TimeSpan(0, 1, 0)
             };
 
-            var timeProvider = new UtcTimeProvider();
             var logger = new Mock<ILogger>();
 
-            _evtPublisher = new EventTopicPublisher(connectionString, topicDescription, timeProvider, logger.Object);
+            _evtPublisher = new EventTopicPublisher(connectionString, topicDescription, logger.Object);
 
             var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 

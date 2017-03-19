@@ -1,13 +1,11 @@
-﻿
+﻿using System;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using Serilog;
+using System.Threading.Tasks;
+
 namespace Astro.CQRS.Messaging.EventHub
 {
-    using System;
-    using Astro.CQRS;
-    using Microsoft.ServiceBus;
-    using Microsoft.ServiceBus.Messaging;
-    using Serilog;
-    using System.Threading.Tasks;
-
     public class EventHubProcessorHost : IWorker
     {
         private readonly IEventProcessorFactory _eventProcessorFactory;

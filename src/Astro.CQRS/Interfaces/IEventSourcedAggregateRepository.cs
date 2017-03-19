@@ -1,9 +1,8 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Astro.CQRS
 {
-    using System;
-    using System.Collections.Generic;
-
     public interface IEventSourcedAggregateRepository
     {
         IEnumerable<IEvent> Save<TAggregate>(TAggregate aggregate) where TAggregate : IEventSourcedAggregate;

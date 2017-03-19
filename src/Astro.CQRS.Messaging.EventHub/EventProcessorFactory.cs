@@ -1,9 +1,8 @@
-﻿
+﻿using System;
+using Microsoft.ServiceBus.Messaging;
+
 namespace Astro.CQRS.Messaging.EventHub
 {
-    using System;
-    using Microsoft.ServiceBus.Messaging;
-
     public class EventProcessorFactory : IEventProcessorFactory
     {
         private readonly Func<IEventProcessor> _makeEventProcessor;
